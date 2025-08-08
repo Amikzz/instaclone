@@ -23,7 +23,7 @@ class ProfileController extends Controller
     public function edit(User $user): View
     {
         //Check if the authenticated user is the same as the user being edited
-        if (auth()->id !== $user->id) {
+        if (auth()->user()->id!== $user->id) {
             abort(403, 'Unauthorized action.');
         }
 
@@ -36,7 +36,7 @@ class ProfileController extends Controller
     public function update(Request $request, User $user): \Illuminate\Http\RedirectResponse
     {
         //Check if the authenticated user is the same as the user being updated
-        if (auth()->id() !== $user->id) {
+        if (auth()->user()->id !== $user->id) {
             abort(403, 'Unauthorized action.');
         }
 

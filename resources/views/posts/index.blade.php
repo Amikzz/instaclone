@@ -8,7 +8,7 @@
                 <div class="card">
                     <div class="card-header d-flex align-items-center">
                         @if($post->user)
-                            <img src="{{$post->$user->profile_image ? asset('storage/' .$post->user->profile_image) : 'https://via.placeholder.com/50'}}"
+                            <img src="{{$post->user->profile_image ? asset('storage/' .$post->user->profile_image) : 'https://via.placeholder.com/50'}}"
                                  alt="{{ $post->user->name }}"
                                  class="rounded-circle me-2"
                                  style="width: 50px; height: 50px;">
@@ -23,7 +23,7 @@
                     <img src="{{ asset('storage/' . $post->image_path) }}" class="card-img-top" alt="Post image">
                     <div class="card-body">
                         <div class="d-flex mb-2">
-                            @if($post->likes->where('user_id', auth()->id())->count() > 0)
+                            @if($post->likes->where('user_id', auth()->user()->id)->count() > 0)
                                 <form action="{{ route('likes.destroy', $post->id) }}" method="POST">
                                     @csrf
                                     @method('DELETE')
@@ -44,7 +44,7 @@
                             </a>
                         </div>
             <p><strong>{{ $post->likes->count() }}</strong> likes</p>
-            @if($post->$user)
+            @if($post->user)
                 <p><strong>{{ $post->user->name }}</strong>: {{ $post->caption }}</p>
             @else
                 <p>{{$post->caption}}</p>

@@ -66,7 +66,7 @@ class PostController extends Controller
     public function edit(Post $post): View
     {
         //Check if the authenticated user is the owner of the post
-        if (auth()->id() !== $post->user_id) {
+        if (auth()->user()->id !== $post->user_id) {
             abort(403, 'Unauthorized action.');
         }
 
@@ -79,7 +79,7 @@ class PostController extends Controller
     public function update(Request $request, Post $post): \Illuminate\Http\RedirectResponse
     {
         //Check if the authenticated user is the owner of the post
-        if (auth()->id() !== $post->user_id) {
+        if (auth()->user()->id !== $post->user_id) {
             abort(403, 'Unauthorized action.');
         }
 
@@ -101,7 +101,7 @@ class PostController extends Controller
     public function destroy(Post $post): \Illuminate\Http\RedirectResponse
     {
         //Check if the authenticated user is the owner of the post
-        if (auth()->id() !== $post->user_id) {
+        if (auth()->user()->id !== $post->user_id) {
             abort(403, 'Unauthorized action.');
         }
 

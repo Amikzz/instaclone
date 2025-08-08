@@ -8,7 +8,7 @@
         <div class="col-md-9">
             <div class="d-flex align-items-center">
                 <h1>{{ $user->name }}</h1>
-                @if($auth()->id === $user->id)
+                @if(auth()->user()->id === $user->id)
                     <a href="{{ route('profile.edit', $user->id) }}" class="btn btn-primary ms-3">Edit Profile</a>
                 @endif
             </div>

@@ -37,7 +37,7 @@ class CommentController extends Controller
     public function destroy(Comment $comment): \Illuminate\Http\RedirectResponse
     {
         // Check if the authenticated user is the owner of the comment
-        if (auth()->id() !== $comment->user_id) {
+        if (auth()->user()->id !== $comment->user_id) {
             abort(403, 'Unauthorized action.');
         }
 

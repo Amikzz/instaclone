@@ -5,6 +5,9 @@ use Illuminate\Support\Facades\Route;
 
 //Set Homepage to show posts (with authentication)
 Route::get('/', [\App\Http\Controllers\PostController::class, 'index'])->middleware('auth')->name('home');
+Route::get('/home', function () {
+    return redirect('/');
+})->name('home');
 
 Auth::routes();
 

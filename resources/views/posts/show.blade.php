@@ -15,7 +15,7 @@
                     <a href="{{ route('profile.show', $post->user->id) }}" class="text-dark text-decoration-none">
                         <strong> {{ $post->user->name }} </strong>
                     </a>
-                    @if(auth()->id() === $post->user->id)
+                    @if(auth()->user()->id === $post->user->id)
                         <div class="dropdown ms-auto">
                             <button class="btn btn-link text-dark" type="button" id="postOptions" data-bs-toggle="dropdown" aria-expanded="false">
                                 <i class="fas fa-ellipsis-v"></i>
@@ -46,7 +46,7 @@
             <hr>
 
             <div class="d-flex mb-2">
-                @if($post->likes->where('user_id', auth()->id())->count() > 0)
+                @if($post->likes->where('user_id', auth()->user()->id)->count() > 0)
                     <form action="{{ route('likes.destroy', $post->id) }}" method="POST">
                         @csrf
                         @method('DELETE')
@@ -77,7 +77,7 @@
                         @endif
                         <p class="mb-0">{{ $comment->comment }}</p>
 
-                        @if(auth()->id() === $comment->user_id || auth()->id() === $post->user_id)
+                        @if(auth()->user()->id === $comment->user_id || auth()->user()->id === $post->user_id)
                             <form action="{{ route('comments.destroy', $comment->id) }}" method="POST" class="ms-auto">
                                 @csrf
                                 @method('DELETE')
