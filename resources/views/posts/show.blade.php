@@ -89,6 +89,20 @@
             </div>
                 @endforeach
             </div>
+            <hr>
+
+            <form action="{{route('comments.store', $post->id)}}" method="POST">
+                @csrf
+                <div class="input-group">
+                    <input type="text" name="comment" class="form-control @error('comment') is-invalid @enderror" placeholder="Add a comment..." required>
+                    <button type="submit" class="btn btn-primary">Post</button>
+                </div>
+                @error('comment')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
+            </form>
         </div>
     </div>
 @endsection
