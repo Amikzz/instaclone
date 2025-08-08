@@ -21,20 +21,45 @@
         body {
             background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
             min-height: 100vh;
-            padding-top: 70px; /* navbar height */
+            padding-top: 70px;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            opacity: 0;
+            animation: fadeInPage 0.6s ease forwards;
         }
-        .nav-profile-avatar {
+
+        @keyframes fadeInPage {
+            to { opacity: 1; }
+        }
+
+        /* Smooth fade for main content */
+        main {
+            animation: fadeUp 0.5s ease forwards;
+            opacity: 0;
+            transform: translateY(15px);
+        }
+        @keyframes fadeUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .nav-profile-avatar, .navbar .dropdown-toggle img {
             width: 32px;
             height: 32px;
             border-radius: 50%;
             object-fit: cover;
+            transition: transform 0.3s ease, border-color 0.3s ease;
         }
+
+        .nav-profile-avatar:hover,
+        .navbar .dropdown-toggle:hover img {
+            transform: scale(1.1);
+            border-color: #ff4e88;
+        }
+
         .nav-letter-avatar {
             width: 32px;
             height: 32px;
             border-radius: 50%;
-            background: #ff4e88; /* Pink/purple theme color */
+            background: #ff4e88;
             color: white;
             font-weight: 600;
             font-size: 14px;
@@ -43,7 +68,13 @@
             justify-content: center;
             text-transform: uppercase;
             user-select: none;
+            transition: transform 0.3s ease, background 0.3s ease;
         }
+        .nav-letter-avatar:hover {
+            transform: scale(1.1);
+            background: #ff79a8;
+        }
+
         .navbar-brand {
             font-family: 'Grand Hotel', cursive;
             font-size: 1.8rem;
@@ -51,19 +82,23 @@
             color: #262626 !important;
             letter-spacing: 1.5px;
             user-select: none;
+            transition: transform 0.3s ease;
         }
+        .navbar-brand:hover {
+            transform: scale(1.05);
+        }
+
         .nav-link {
             color: #262626;
             font-weight: 500;
-            transition: color 0.3s ease;
+            transition: color 0.3s ease, transform 0.3s ease;
         }
         .nav-link:hover,
         .nav-link:focus {
-            color: #ff4e88; /* Pink hover */
-            text-decoration: none;
+            color: #ff4e88;
+            transform: translateY(-2px);
         }
 
-        /* Active link styling for login/register */
         .nav-link.active {
             color: #fff !important;
             background: linear-gradient(135deg, #ff4e88, #ff9ac4);
@@ -71,33 +106,27 @@
             padding: 5px 12px;
             font-weight: 600;
             box-shadow: 0 4px 12px rgba(255,78,136,0.4);
+            animation: pulseActive 1.5s infinite ease-in-out;
         }
 
-        /* Profile dropdown avatar */
-        .navbar .dropdown-toggle img {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            object-fit: cover;
-            margin-right: 8px;
-            border: 1.5px solid #ddd;
-            transition: border-color 0.3s ease;
+        @keyframes pulseActive {
+            0%, 100% { box-shadow: 0 4px 12px rgba(255,78,136,0.4); }
+            50% { box-shadow: 0 6px 16px rgba(255,78,136,0.6); }
         }
-        .navbar .dropdown-toggle:hover img {
-            border-color: #ff4e88;
-        }
-        /* Smooth dropdown fade */
+
         .dropdown-menu {
             animation: fadeInDropdown 0.25s ease forwards;
             min-width: 10rem;
             border-radius: 10px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            transform-origin: top right;
         }
+
         @keyframes fadeInDropdown {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
         }
-        /* Navbar sticky & shadow */
+
         nav.navbar {
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
             background-color: white !important;
@@ -106,8 +135,14 @@
             top: 0;
             width: 100%;
             z-index: 1050;
+            animation: slideDown 0.5s ease;
         }
-        /* Bottom fixed footer placeholder for future nav */
+
+        @keyframes slideDown {
+            from { transform: translateY(-100%); }
+            to { transform: translateY(0); }
+        }
+
         footer.footer-placeholder {
             position: fixed;
             bottom: 0;
@@ -121,10 +156,13 @@
             justify-content: center;
             color: #999;
             font-size: 0.875rem;
+            transition: background 0.3s ease;
+        }
+        footer.footer-placeholder:hover {
+            background: #f5f5f5;
         }
     </style>
 
-    <!-- Optional Google Fonts Grand Hotel for branding (Instagram-like font) -->
     <link href="https://fonts.googleapis.com/css2?family=Grand+Hotel&display=swap" rel="stylesheet" />
 </head>
 <body>
@@ -138,25 +176,24 @@
             <ul class="navbar-nav d-flex flex-row align-items-center gap-3">
                 @auth
                     <li class="nav-item">
-                        <a class="nav-link d-flex align-items-center gap-1 {{ request()->routeIs('posts.index') ? 'active' : '' }}" href="{{ route('posts.index') }}" title="Feed">
+                        <a class="nav-link d-flex align-items-center gap-1 {{ request()->routeIs('posts.index') ? 'active' : '' }}" href="{{ route('posts.index') }}">
                             <i class="fas fa-home fa-lg"></i>
                             <span class="d-none d-md-inline">Feed</span>
                         </a>
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link d-flex align-items-center gap-1 {{ request()->routeIs('posts.create') ? 'active' : '' }}" href="{{ route('posts.create') }}" title="New Post">
+                        <a class="nav-link d-flex align-items-center gap-1 {{ request()->routeIs('posts.create') ? 'active' : '' }}" href="{{ route('posts.create') }}">
                             <i class="fas fa-plus-square fa-lg"></i>
                             <span class="d-none d-md-inline">New Post</span>
                         </a>
                     </li>
 
                     <li class="nav-item dropdown">
-                        <a id="navbarDropdown" class="nav-link dropdown-toggle d-flex align-items-center gap-1" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="Profile">
+                        <a id="navbarDropdown" class="nav-link dropdown-toggle d-flex align-items-center gap-1" href="#" role="button" data-bs-toggle="dropdown">
                             @if(Auth::user()->profile_image)
                                 <img src="{{ asset('storage/' . Auth::user()->profile_image) }}" alt="Profile" class="nav-profile-avatar">
                             @else
-                                {{-- Show first letter of username or name --}}
                                 <div class="nav-letter-avatar">
                                     {{ strtoupper(substr(Auth::user()->username ?? Auth::user()->name, 0, 1)) }}
                                 </div>
@@ -164,7 +201,7 @@
                             <span class="d-none d-md-inline">{{ Auth::user()->username ?? Auth::user()->name }}</span>
                         </a>
 
-                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                        <ul class="dropdown-menu dropdown-menu-end">
                             <li>
                                 <a class="dropdown-item d-flex align-items-center gap-2" href="{{ route('profile.show', Auth::user()->id) }}">
                                     <i class="fas fa-user-circle"></i> Profile
