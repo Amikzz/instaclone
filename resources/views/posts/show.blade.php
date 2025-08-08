@@ -21,7 +21,7 @@
                                 <i class="fas fa-ellipsis-v"></i>
                             </button>
                             <ul class="dropdown-menu" aria-labelledby="postOptions">
-                                <li><a class="dropdown-item" href="{{ route('posts.edit', $post->id }}">Edit</a></li>
+                                <li><a class="dropdown-item" href="{{ route('posts.edit', $post->id) }}">Edit</a></li>
                                 <li>
                                     <form action="{{ route('posts.destroy', $post->id) }}" method="POST" class="d-inline">
                                         @csrf
@@ -75,7 +75,7 @@
                         @else
                             <strong class="me-2">Deleted User</strong>
                         @endif
-                        <p class="mb-0">{{ $comment->comment }}</p>
+                        <p class="mb-0">{{ $comment->content }}</p>
 
                         @if(auth()->user()->id === $comment->user_id || auth()->user()->id === $post->user_id)
                             <form action="{{ route('comments.destroy', $comment->id) }}" method="POST" class="ms-auto">

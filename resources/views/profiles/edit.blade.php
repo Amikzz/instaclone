@@ -22,7 +22,7 @@
                         </div>
                         <div class="mb-3">
                             <label for="username" class="form-label">Username</label>
-                            <textarea id="username" class="form-control @error('username') is-invalid @enderror" name="username" rows="3">{{ old('username', $user->username) }}</textarea>
+                            <input type="text" id="username" class="form-control @error('username') is-invalid @enderror" name="username" rows="3">{{ old('username', $user->username) }}</input>
                             @error('username')
                             <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>

@@ -35,11 +35,12 @@ class ProfileController extends Controller
      */
     public function update(Request $request, User $user): \Illuminate\Http\RedirectResponse
     {
-        //Check if the authenticated user is the same as the user being updated
+        // Check authorization
         if (auth()->user()->id !== $user->id) {
             abort(403, 'Unauthorized action.');
         }
 
+        // Validate input
         $request->validate([
             'name' => 'required|string|max:255',
             'username' => 'required|string|max:255|unique:users,username,' . $user->id,
@@ -47,17 +48,26 @@ class ProfileController extends Controller
             'profile_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
-        if ($request->hasFile('profile_image')) {
-            Storage::disk('public')->delete($user->profile_image);
-        }
-
-        $imagePath = $request->file('profile_image')->store('profile', 'public');
-        $user->update([
+        $data = [
             'name' => $request->input('name'),
             'username' => $request->input('username'),
             'bio' => $request->input('bio'),
-            'profile_image' => $imagePath,
-        ]);
+        ];
+
+        // Handle profile image upload safely
+        if ($request->hasFile('profile_image')) {
+            // Delete old image if exists
+            if ($user->profile_image && Storage::disk('public')->exists($user->profile_image)) {
+                Storage::disk('public')->delete($user->profile_image);
+            }
+
+            // Store new image
+            $imagePath = $request->file('profile_image')->store('profile', 'public');
+            $data['profile_image'] = $imagePath;
+        }
+
+        // Update user data
+        $user->update($data);
 
         return redirect("/profile/{$user->id}")
             ->with('success', 'Profile updated successfully!');
