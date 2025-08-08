@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Illuminate\View\View;
 
 class PostController extends Controller
@@ -31,24 +32,47 @@ class PostController extends Controller
         return view('posts.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request): \Illuminate\Http\RedirectResponse
     {
         $request->validate([
             'caption' => 'required|string|max:255',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'cropped_image' => 'required|string',  // validate base64 string presence
         ]);
 
-        $imagePath = $request->file('image')->store('uploads', 'public');
+        // Get base64 string from request
+        $base64Image = $request->input('cropped_image');
 
+        // Extract the actual base64 encoded data from data URI scheme format
+        if (preg_match('/^data:image\/(\w+);base64,/', $base64Image, $type)) {
+            $base64Image = substr($base64Image, strpos($base64Image, ',') + 1);
+            $extension = strtolower($type[1]); // jpg, png, gif, etc.
+            if (!in_array($extension, ['jpg', 'jpeg', 'png', 'gif', 'svg'])) {
+                return back()->withErrors(['cropped_image' => 'Unsupported image type.']);
+            }
+        } else {
+            return back()->withErrors(['cropped_image' => 'Invalid image data.']);
+        }
+
+        // Decode base64 string
+        $imageData = base64_decode($base64Image);
+
+        if ($imageData === false) {
+            return back()->withErrors(['cropped_image' => 'Base64 decode failed.']);
+        }
+
+        // Create unique filename
+        $filename = 'uploads/' . Str::random(40) . '.' . $extension;
+
+        // Save image file to storage/app/public/uploads
+        Storage::disk('public')->put($filename, $imageData);
+
+        // Save post record with image path
         auth()->user()->posts()->create([
             'caption' => $request->input('caption'),
-            'image_path' => $imagePath,
+            'image_path' => $filename,
         ]);
 
-        return redirect('/profile/' .auth()->user()->id)
+        return redirect('/profile/' . auth()->user()->id)
             ->with('success', 'Post created successfully!');
     }
 
