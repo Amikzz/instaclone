@@ -17,11 +17,27 @@
             width: 50px;
             height: 50px;
             border-radius: 50%;
-            border: 2px solid #ff2e63;
             object-fit: cover;
-            transition: box-shadow 0.3s ease;
-            cursor: pointer;
+            display: inline-block;
+            vertical-align: middle;
         }
+
+        .letter-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: #4a90e2; /* Choose any color you like */
+            color: white;
+            font-weight: 700;
+            font-size: 24px;
+            line-height: 50px;
+            text-align: center;
+            user-select: none;
+            display: inline-block;
+            vertical-align: middle;
+            font-family: Arial, sans-serif;
+        }
+
         .post-avatar:hover {
             box-shadow: 0 0 12px #ff2e63;
         }
@@ -114,13 +130,20 @@
                         <div class="card-header">
                             @if($post->user)
                                 <a href="{{ route('profile.show', $post->user->id) }}">
-                                    <img src="{{ $post->user->profile_image ? asset('storage/' . $post->user->profile_image) : 'https://via.placeholder.com/50' }}"
-                                         alt="{{ $post->user->name }}"
-                                         class="post-avatar"
-                                         title="{{ $post->user->name }}">
+                                    @if($post->user->profile_image)
+                                        <img src="{{ asset('storage/' . $post->user->profile_image) }}"
+                                             alt="{{ $post->user->name }}"
+                                             class="post-avatar"
+                                             title="{{ $post->user->name }}">
+                                    @else
+                                        {{-- Show first letter in a styled div --}}
+                                        <div class="post-avatar letter-avatar" title="{{ $post->user->name }}">
+                                            {{ strtoupper(substr($post->user->name, 0, 1)) }}
+                                        </div>
+                                    @endif
                                 </a>
                                 <a href="{{ route('profile.show', $post->user->id) }}" class="username-link">
-                                    {{ $post->user->name }}
+                                    {{ $post->user->username ?? $post->user->name }}
                                 </a>
                             @else
                                 <img src="https://via.placeholder.com/50" alt="User not found" class="post-avatar" />

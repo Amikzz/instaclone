@@ -14,12 +14,35 @@
     <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
 
+    <!-- Logo -->
+    <link rel="icon" href="{{ asset('images/logo.ico') }}" type="image/ico" />
+
     <style>
         body {
             background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
             min-height: 100vh;
             padding-top: 70px; /* navbar height */
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .nav-profile-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        .nav-letter-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background-color: #4a90e2; /* Choose a theme color */
+            color: white;
+            font-weight: 600;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-transform: uppercase;
+            user-select: none;
         }
         .navbar-brand {
             font-family: 'Grand Hotel', cursive;
@@ -120,9 +143,12 @@
                     <li class="nav-item dropdown">
                         <a id="navbarDropdown" class="nav-link dropdown-toggle d-flex align-items-center gap-1" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="Profile">
                             @if(Auth::user()->profile_image)
-                                <img src="{{ asset('storage/' . Auth::user()->profile_image) }}" alt="Profile" />
+                                <img src="{{ asset('storage/' . Auth::user()->profile_image) }}" alt="Profile" class="nav-profile-avatar">
                             @else
-                                <img src="https://via.placeholder.com/32" alt="Profile" />
+                                {{-- Show first letter of username or name --}}
+                                <div class="nav-letter-avatar">
+                                    {{ strtoupper(substr(Auth::user()->username ?? Auth::user()->name, 0, 1)) }}
+                                </div>
                             @endif
                             <span class="d-none d-md-inline">{{ Auth::user()->username ?? Auth::user()->name }}</span>
                         </a>
