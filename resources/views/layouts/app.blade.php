@@ -34,7 +34,7 @@
             width: 32px;
             height: 32px;
             border-radius: 50%;
-            background-color: #4a90e2; /* Choose a theme color */
+            background: #ff4e88; /* Pink/purple theme color */
             color: white;
             font-weight: 600;
             font-size: 14px;
@@ -59,9 +59,20 @@
         }
         .nav-link:hover,
         .nav-link:focus {
-            color: #0095f6;
+            color: #ff4e88; /* Pink hover */
             text-decoration: none;
         }
+
+        /* Active link styling for login/register */
+        .nav-link.active {
+            color: #fff !important;
+            background: linear-gradient(135deg, #ff4e88, #ff9ac4);
+            border-radius: 12px;
+            padding: 5px 12px;
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(255,78,136,0.4);
+        }
+
         /* Profile dropdown avatar */
         .navbar .dropdown-toggle img {
             width: 32px;
@@ -73,7 +84,7 @@
             transition: border-color 0.3s ease;
         }
         .navbar .dropdown-toggle:hover img {
-            border-color: #0095f6;
+            border-color: #ff4e88;
         }
         /* Smooth dropdown fade */
         .dropdown-menu {
@@ -127,14 +138,14 @@
             <ul class="navbar-nav d-flex flex-row align-items-center gap-3">
                 @auth
                     <li class="nav-item">
-                        <a class="nav-link d-flex align-items-center gap-1" href="{{ route('posts.index') }}" title="Feed">
+                        <a class="nav-link d-flex align-items-center gap-1 {{ request()->routeIs('posts.index') ? 'active' : '' }}" href="{{ route('posts.index') }}" title="Feed">
                             <i class="fas fa-home fa-lg"></i>
                             <span class="d-none d-md-inline">Feed</span>
                         </a>
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link d-flex align-items-center gap-1" href="{{ route('posts.create') }}" title="New Post">
+                        <a class="nav-link d-flex align-items-center gap-1 {{ request()->routeIs('posts.create') ? 'active' : '' }}" href="{{ route('posts.create') }}" title="New Post">
                             <i class="fas fa-plus-square fa-lg"></i>
                             <span class="d-none d-md-inline">New Post</span>
                         </a>
@@ -171,10 +182,10 @@
 
                 @guest
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('login') }}">Login</a>
+                        <a class="nav-link {{ request()->routeIs('login') ? 'active' : '' }}" href="{{ route('login') }}">Login</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('register') }}">Register</a>
+                        <a class="nav-link {{ request()->routeIs('register') ? 'active' : '' }}" href="{{ route('register') }}">Register</a>
                     </li>
                 @endguest
             </ul>
