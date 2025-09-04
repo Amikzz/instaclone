@@ -8,13 +8,22 @@ use Illuminate\Http\Request;
 
 class CommentController extends Controller
 {
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
     public function __construct()
     {
         $this->middleware('auth');
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created comment in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Post  $post
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Request $request, Post $post): \Illuminate\Http\RedirectResponse
     {
@@ -32,7 +41,10 @@ class CommentController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove the specified comment from storage.
+     *
+     * @param  \App\Models\Comment  $comment
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(Comment $comment): \Illuminate\Http\RedirectResponse
     {
