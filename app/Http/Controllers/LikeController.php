@@ -7,13 +7,21 @@ use Illuminate\Http\Request;
 
 class LikeController extends Controller
 {
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
     public function __construct()
     {
         $this->middleware('auth');
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created like in storage.
+     *
+     * @param  \App\Models\Post  $post
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Post $post)
     {
@@ -25,7 +33,10 @@ class LikeController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove the specified like from storage.
+     *
+     * @param  \App\Models\Post  $post
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(Post $post)
     {

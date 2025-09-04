@@ -10,13 +10,20 @@ use Illuminate\View\View;
 
 class PostController extends Controller
 {
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
     public function __construct()
     {
         $this->middleware('auth');
     }
 
     /**
-     * Display a listing of the resource.
+     * Display a listing of the posts.
+     *
+     * @return \Illuminate\View\View
      */
     public function index(): View
     {
@@ -25,13 +32,21 @@ class PostController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Show the form for creating a new post.
+     *
+     * @return \Illuminate\View\View
      */
     public function create(): View
     {
         return view('posts.create');
     }
 
+    /**
+     * Store a newly created post in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function store(Request $request): \Illuminate\Http\RedirectResponse
     {
         $request->validate([
@@ -77,7 +92,10 @@ class PostController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Display the specified post.
+     *
+     * @param  \App\Models\Post  $post
+     * @return \Illuminate\View\View
      */
     public function show(Post $post): View
     {
@@ -85,7 +103,10 @@ class PostController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Show the form for editing the specified post.
+     *
+     * @param  \App\Models\Post  $post
+     * @return \Illuminate\View\View
      */
     public function edit(Post $post): View
     {
@@ -98,7 +119,11 @@ class PostController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update the specified post in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Post  $post
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(Request $request, Post $post): \Illuminate\Http\RedirectResponse
     {
@@ -120,7 +145,10 @@ class PostController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove the specified post from storage.
+     *
+     * @param  \App\Models\Post  $post
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(Post $post): \Illuminate\Http\RedirectResponse
     {

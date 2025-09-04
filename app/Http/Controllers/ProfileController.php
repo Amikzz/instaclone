@@ -10,7 +10,10 @@ use Illuminate\View\View;
 class ProfileController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display the specified user's profile.
+     *
+     * @param  \App\Models\User  $user
+     * @return \Illuminate\View\View
      */
     public function index(User $user): View
     {
@@ -18,7 +21,10 @@ class ProfileController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Show the form for editing the specified user's profile.
+     *
+     * @param  \App\Models\User  $user
+     * @return \Illuminate\View\View
      */
     public function edit(User $user): View
     {
@@ -31,7 +37,11 @@ class ProfileController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update the specified user's profile in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\User  $user
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(Request $request, User $user): \Illuminate\Http\RedirectResponse
     {
