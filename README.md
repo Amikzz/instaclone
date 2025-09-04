@@ -1,6 +1,6 @@
-# PhotoSphere - A Simple Social Media Platform
+# InstaClone - A Simple Social Media Platform
 
-PhotoSphere is a web application built with Laravel that mimics a simple social media platform. It allows users to create profiles, upload posts with images and captions, and interact with other users' posts by liking and commenting.
+InstaClone is a web application built with Laravel that mimics a simple social media platform. It allows users to create profiles, upload posts with images and captions, and interact with other users' posts by liking and commenting.
 
 ## Table of Contents
 
